@@ -1,0 +1,59 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Category {
+  PS4
+  PS5
+  STEAM
+  PC
+}
+
+model User{
+
+  id Int @id @default(autoincrement())
+
+  nickname String @unique
+
+  email String @unique
+  
+  senha String
+
+}
+
+model Games{
+  
+  id Int @id @default(autoincrement())
+
+  title String
+
+  image String
+
+  price Float
+
+  category Category
+
+  description String
+
+  rateId Int?
+
+  rate Rate? @relation(fields: [rateId], references: [id])
+}
+
+model Rate{
+
+  id Int @id @default(autoincrement())
+
+  rate Float
+
+  count Int
+
+  games Games[]
+
+}
